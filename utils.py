@@ -37,7 +37,7 @@ def get_transforms(img_size):
     train_tranform = transforms.Compose([
         transforms.ToTensor(),
         transforms.Resize(img_size),
-        transforms.Normalize(mean=[0.3720, 0.3410, 0.4056], std=[0.2808, 0.2760, 0.3118]),
+        transforms.Normalize(mean=[0.3544, 0.3261, 0.3850], std=[0.2801, 0.2741, 0.3105]),
         # [0.3720, 0.3410, 0.4056] [0.2808, 0.2760, 0.3118]
     ])
 

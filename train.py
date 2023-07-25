@@ -11,20 +11,20 @@ from utils import (
     accuracy
 )
 
-LEARNING_RATE = 1e-5
+LEARNING_RATE = 1e-4
 DEVICE = "cuda" if torch.cuda.is_available else "cpu"
 BATCH_SIZE = 64
-EPOCHS = 8
+EPOCHS = 10
 NUM_WORKS = 1
 PIN_MODEL = True
 SHUFFLE = True
-LOAD_MODEL = True
+LOAD_MODEL = False
 IMAGE_SIZE = [64, 64]
 TRAIN_IMG_DIR = "./data/train"
 VAL_IMG_DIR = "./data/val"
 LOW_LOSS = 1.
 
-model = UniversalClassifier().to(DEVICE)
+model = UniversalClassifier(num_classes=9).to(DEVICE)
 optimizer = optim.Adam(model.parameters(), LEARNING_RATE)
 loss_fn = nn.CrossEntropyLoss()
 ImageFile.LOAD_TRUNCATED_IMAGES = True
@@ -76,10 +76,10 @@ def main():
 
     for _ in range(EPOCHS):
         model.train()
-        loss = train_model(train_loader, "train") # model.trainning()
+        loss = train_model(train_loader, True)
 
         model.eval()
-        train_model(val_loader, "eval") # model.trainning()
+        train_model(val_loader, False)
 
         if loss <= LOW_LOSS:
             checkpoint = {
@@ -87,7 +87,7 @@ def main():
                 "optimizer": optimizer.state_dict(),
                 "low_loss": LOW_LOSS
             }
-            save_checkpoint(checkpoint, "checkpoints/proto_3.pth.tar")
+            save_checkpoint(checkpoint, "checkpoints/proto_4.pth.tar")
             LOW_LOSS = loss
 
 if __name__ == "__main__":
